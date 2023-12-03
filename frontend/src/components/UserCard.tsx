@@ -1,18 +1,33 @@
 import { UserType, cn } from "@/lib/utils";
-import React from "react";
 import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import EditButton from "./EditButton";
+import { MoreHorizontal } from "lucide-react";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 
 type Props = {
     user: UserType;
@@ -32,7 +47,7 @@ function UserCard({ user }: Props) {
                     </Avatar>
                     <Badge
                         className={cn(
-                            "hidden absolute top-1 right-0 lg:flex justify-end",
+                            "absolute -top-4 lg:top-1 -left-4 lg:left-0 lg:flex justify-end text-[10px] py-0 lg:text-xs ",
                             {
                                 "bg-green-400 hover:bg-green-600":
                                     user.available,
@@ -43,29 +58,98 @@ function UserCard({ user }: Props) {
                         {user.available ? "Available" : "unavailable"}
                     </Badge>
 
-                    {user.first_name + " " + user.last_name}
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button
+                                variant="ghost"
+                                className="h-8 w-8 p-0 absolute top-1 right-0"
+                            >
+                                <span className="sr-only">Open menu</span>
+                                <MoreHorizontal className="h-5 w-5 " />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuItem
+                                onClick={() =>
+                                    navigator.clipboard.writeText(
+                                        user.id.toString()
+                                    )
+                                }
+                            >
+                                Copy User ID
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <Dialog>
+                                <DialogTrigger>
+                                    <DropdownMenuItem
+                                        onSelect={(e) => e.preventDefault()}
+                                        className="w-full"
+                                    >
+                                        <EditButton user={user} />
+                                    </DropdownMenuItem>
+                                </DialogTrigger>
+                            </Dialog>
+                            <Dialog>
+                                <DialogTrigger>
+                                    <DropdownMenuItem
+                                        onSelect={(e) => e.preventDefault()}
+                                        className="w-full text-red-500"
+                                    >
+                                        Delete item
+                                    </DropdownMenuItem>
+                                </DialogTrigger>
+                                <DialogContent>
+                                    <DialogHeader>
+                                        <DialogTitle>
+                                            Are you sure absolutely sure?
+                                        </DialogTitle>
+                                        <DialogDescription>
+                                            This action cannot be undone. This
+                                            will permanently delete your account
+                                            and remove your data from our
+                                            servers.
+                                        </DialogDescription>
+                                    </DialogHeader>
+                                    <DialogFooter>
+                                        <Button variant="default">
+                                            Cancel
+                                        </Button>
+                                        <Button variant="destructive">
+                                            Delete
+                                        </Button>
+                                    </DialogFooter>
+                                </DialogContent>
+                            </Dialog>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </CardTitle>
-                <CardDescription className="flex flex-col gap-y-2 pt-10">
-                    <span className="flex flex-row gap-x-2">
-                        <p className="text-xs lg:text-base  font-bold">
-                            Domain:
-                        </p>
-                        {user.domain}
-                    </span>
-                    <span className="flex flex-row gap-x-2">
-                        <p className="text-xs lg:text-base  font-bold">
-                            Gender:
-                        </p>
-                        {user.gender}
-                    </span>
-                    <span className="flex flex-row gap-x-2 truncate	">
-                        <p className="text-xs lg:text-base font-bold ">
-                            Email:
-                        </p>
-                        {user.email}
-                    </span>
-                </CardDescription>
             </CardHeader>
+            <CardDescription className="text-base text-center lg:text-xl font-bold">
+                {user.first_name + " " + user.last_name}
+            </CardDescription>
+
+            <CardContent className="flex flex-col gap-y-2 pt-4">
+                <span className="grid grid-cols-4 gap-x-2 text-xs lg:text-base">
+                    <p className="col-span-2 lg:col-span-1   font-semibold">
+                        Domain:
+                    </p>
+
+                    {user.domain}
+                </span>
+                <span className="grid grid-cols-4 gap-x-2 text-xs lg:text-base">
+                    <p className="col-span-2 lg:col-span-1   font-semibold">
+                        Gender:
+                    </p>
+                    {user.gender}
+                </span>
+                <span className="grid grid-cols-4 gap-x-2 truncate	text-xs lg:text-base">
+                    <p className="col-span-2 lg:col-span-1  font-semibold ">
+                        Email:
+                    </p>
+                    {user.email}
+                </span>
+            </CardContent>
         </Card>
     );
 }
