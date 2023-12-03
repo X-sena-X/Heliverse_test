@@ -1,11 +1,15 @@
-import { CreateTeamButton } from "@/components/CreateTeamButton";
 import FilterButton from "@/components/FilterButton";
 import SearchInput from "@/components/SearchInput";
 import UserList from "@/components/UserList";
 import { UserData } from "@/lib/utils";
+import { useContext } from "react";
+import { UserContext } from "@/context/ContextProvider";
+import { CreateTeamButton } from "@/components/CreateTeamButton";
 
 function Homepage() {
     //const dispatch = useDispatch();
+    const userContext = useContext(UserContext);
+    const { selectedUsers, setSelectedUsers } = userContext || {};
     const onSearchTextChange = (text: string) => {
         //dispatch(updateFilters("searchText", text));
     };
@@ -18,12 +22,27 @@ function Homepage() {
                 </div>
                 <div className="flex flex-row gap-x-2 lg:gap-x-0 my-4 lg:my-0">
                     <FilterButton className="lg:mr-16" />
-                    <CreateTeamButton userArray={UserData} />
                 </div>
             </div>
             <div className="w-screen h-[80%] lg:px-5 lg:py-4 py-1">
                 <UserList />
             </div>
+            {selectedUsers ? (
+                <div className=" w-screen bg-black fixed bottom-0 flex flex-row justify-between px-10 py-2 items-center">
+                    <div className="flex flex-row gap-x-6 items-center">
+                        {selectedUsers.map((user) => (
+                            <div className="flex flex-col text-white relative">
+                                <span>{user.first_name}</span>
+                                <span>{user.domain}</span>
+                            </div>
+                        ))}
+                    </div>
+
+                    <CreateTeamButton />
+                </div>
+            ) : (
+                <></>
+            )}
         </div>
     );
 }

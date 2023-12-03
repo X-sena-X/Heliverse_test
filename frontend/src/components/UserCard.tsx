@@ -28,12 +28,65 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import { useContext } from "react";
+import { UserContext } from "@/context/ContextProvider";
+import { useToast } from "@/components/ui/use-toast";
 
 type Props = {
     user: UserType;
 };
 
+type SelectedUserType = {
+    id: number;
+    first_name: string;
+    last_name: string;
+    email: string;
+    gender: string;
+    avatar: string;
+    domain: string;
+    available: boolean;
+};
 function UserCard({ user }: Props) {
+    const { toast } = useToast();
+    const userContext = useContext(UserContext);
+    const { selectedUsers, setSelectedUsers } = userContext || {};
+
+    const CheckTeamEligibility = ({ newUser }: { newUser: UserType }) => {
+        if (!newUser.available) {
+            toast({
+                title: "Uh oh! This user cannot be added to the team.",
+                variant: "destructive",
+                description: "User not available currently.",
+            });
+            return;
+        }
+
+        if (!selectedUsers) {
+            setSelectedUsers([newUser]);
+            return;
+        }
+
+        if (selectedUsers.some((user) => user.id === newUser.id)) {
+            toast({
+                title: "Uh oh! This user cannot be added to the team.",
+                variant: "destructive",
+                description: "User already selected.",
+            });
+            return;
+        }
+
+        if (selectedUsers.some((user) => user.domain === newUser.domain)) {
+            toast({
+                title: "Uh oh! This user cannot be added to the team.",
+                variant: "destructive",
+                description: "User in the same domain.",
+            });
+            return;
+        }
+
+        setSelectedUsers([...selectedUsers, newUser]);
+    };
+
     return (
         <Card className="w-[180px] lg:w-[310px] hover:shadow-[-10px_-10px_30px_4px_rgba(0,0,0,0.1),_10px_10px_30px_4px_rgba(45,78,255,0.15)] shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
             <CardHeader>
@@ -78,6 +131,13 @@ function UserCard({ user }: Props) {
                                 }
                             >
                                 Copy User ID
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() =>
+                                    CheckTeamEligibility({ newUser: user })
+                                }
+                            >
+                                Add To Team
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <Dialog>

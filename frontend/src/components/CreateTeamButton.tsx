@@ -1,15 +1,20 @@
-import React from "react";
 import { Button } from "./ui/button";
 import { UserType } from "@/lib/utils";
+import { useContext } from "react";
+import { UserContext } from "@/context/ContextProvider";
 
-type Props = {
-    userArray: Array<UserType>;
-};
+type Props = {};
 
-export function CreateTeamButton({ userArray }: Props) {
+export function CreateTeamButton({}: Props) {
+    const userContext = useContext(UserContext);
+    const { selectedUsers } = userContext || {};
+    function onCreateTeam() {}
+
     return (
         <>
-            <Button>Create Team</Button>
+            <Button variant={"outline"} onClick={() => onCreateTeam()}>
+                Create Team
+            </Button>
         </>
     );
 }
