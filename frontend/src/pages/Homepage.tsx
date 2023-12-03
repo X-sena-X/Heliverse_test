@@ -2,7 +2,7 @@ import FilterButton from "@/components/FilterButton";
 import SearchInput from "@/components/SearchInput";
 import UserList from "@/components/UserList";
 import { UserData } from "@/lib/utils";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "@/context/ContextProvider";
 import { CreateTeamButton } from "@/components/CreateTeamButton";
 
@@ -13,7 +13,7 @@ function Homepage() {
     const onSearchTextChange = (text: string) => {
         //dispatch(updateFilters("searchText", text));
     };
-
+    const [page, setPage] = useState<Number>(1);
     return (
         <div className="w-screen min-h-screen max-h-fit mt-20 items-center dark:bg-black bg-white px-1 py-5 lg:p-5">
             <div className="w-full flex flex-col lg:flex-row justify-between px-4 lg:px-10">
@@ -24,9 +24,17 @@ function Homepage() {
                     <FilterButton className="lg:mr-16" />
                 </div>
             </div>
-            <div className="w-screen h-[80%] lg:px-5 lg:py-4 py-1">
+            <div className="w-screen h-[80%] lg:px-5 lg:py-4 py-1 mb-10 items-center flex flex-col">
                 <UserList />
+                <div className="join mt-2">
+                    <button className="join-item btn">«</button>
+                    <button className="join-item btn">
+                        Page {page.toLocaleString()}
+                    </button>
+                    <button className="join-item btn">»</button>
+                </div>
             </div>
+
             {selectedUsers ? (
                 <div className=" w-screen bg-black fixed bottom-0 flex flex-row justify-between px-10 py-2 items-center">
                     <div className="flex flex-row gap-x-6 items-center">

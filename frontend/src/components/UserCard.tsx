@@ -192,16 +192,15 @@ function UserCard({ user }: Props) {
             <CardContent className="flex flex-col gap-y-2 pt-4">
                 <span className="grid grid-cols-4 gap-x-2 text-xs lg:text-base">
                     <p className="col-span-2 lg:col-span-1   font-semibold">
-                        Domain:
-                    </p>
-
-                    {user.domain}
-                </span>
-                <span className="grid grid-cols-4 gap-x-2 text-xs lg:text-base">
-                    <p className="col-span-2 lg:col-span-1   font-semibold">
                         Gender:
                     </p>
                     {user.gender}
+                </span>
+                <span className="grid grid-cols-4 gap-x-2 text-xs lg:text-base">
+                    <p className="col-span-2 lg:col-span-1   font-semibold">
+                        Domain:
+                    </p>
+                    <p className="col-span-2">{user.domain}</p>
                 </span>
                 <span className="grid grid-cols-4 gap-x-2 truncate	text-xs lg:text-base">
                     <p className="col-span-2 lg:col-span-1  font-semibold ">

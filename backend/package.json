@@ -1,0 +1,34 @@
+{
+	"name": "heliverse-users",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"build": "rimraf dist && npx tsup src/index.ts --format cjs --dts --minify --clean",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node dist/index.js",
+		"dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+		"initdb": "node dist/scripts/initdb.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/node": "^20.10.2",
+		"nodemon": "^3.0.2",
+		"prisma": "^5.6.0",
+		"rimraf": "^5.0.5",
+		"ts-node": "^10.9.1",
+		"typescript": "^5.3.2"
+	},
+	"dependencies": {
+		"@prisma/client": "^5.6.0",
+		"cors": "^2.8.5",
+		"express": "^4.18.2",
+		"joi": "^17.11.0",
+		"morgan": "^1.10.0"
+	},
+	"prisma": {
+		"seed": "ts-node prisma/seed.ts"
+	}
+}
