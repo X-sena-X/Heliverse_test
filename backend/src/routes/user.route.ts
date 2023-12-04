@@ -18,7 +18,5 @@ router.put("/:id", updateUser);
 router.delete("/:id", deleteUser);
 router.get("/search", searchByName);
 router.get("/filters", filters);
-//router.get("/filter-by-gender", filterByGender);
-//router.get("/filter-by-availability", filterByAvailability);
 
 export default router;
