@@ -1,6 +1,6 @@
 import { Button } from "./ui/button";
 import { UserType } from "@/lib/utils";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "@/context/ContextProvider";
 import {
     Dialog,
@@ -11,15 +11,47 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
 type Props = {};
+
+const formSchema = z.object({
+    teamname: z.string().min(2, {
+        message: "teamname must be at least 4 characters.",
+    }),
+    users: z.array(z.string()),
+});
 
 export function CreateTeamButton({}: Props) {
     const userContext = useContext(UserContext);
-    const { selectedUsers } = userContext || {};
-    function onCreateTeam() {}
-
+    const { selectedUsers } = userContext || [];
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            teamname: "",
+            users: selectedUsers!.map((user) => user.domain),
+        },
+    });
+    function onCreateTeam(values: z.infer<typeof formSchema>) {
+        console.log(values);
+    }
+    useEffect(() => {
+        form.setValue(
+            "users",
+            selectedUsers!.map((user) => user.domain)
+        );
+    }, [selectedUsers]);
     return (
         <>
             <Dialog>
@@ -30,34 +62,38 @@ export function CreateTeamButton({}: Props) {
                     <DialogHeader>
                         <DialogTitle>Create A new Team</DialogTitle>
                         <DialogDescription>
-                            Ready to make the team click okay
+                            Ready to make the team. Click submit
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="name" className="text-right">
-                                Name
-                            </Label>
-                            <Input
-                                id="name"
-                                defaultValue="Pedro Duarte"
-                                className="col-span-3"
-                            />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="username" className="text-right">
-                                Username
-                            </Label>
-                            <Input
-                                id="username"
-                                defaultValue=""
-                                className="col-span-3"
-                            />
-                        </div>
-                    </div>
-                    <DialogFooter>
-                        <Button type="submit">Save changes</Button>
-                    </DialogFooter>
+                    <Form {...form}>
+                        <form
+                            onSubmit={form.handleSubmit(onCreateTeam)}
+                            className="space-y-8"
+                        >
+                            <div className="grid gap-4 py-4">
+                                <FormField
+                                    control={form.control}
+                                    name="teamname"
+                                    render={({ field }) => (
+                                        <FormItem className="grid grid-cols-4 items-center gap-4">
+                                            <Label className="text-right">
+                                                Team Name
+                                            </Label>
+                                            <Input
+                                                {...field}
+                                                className="col-span-3"
+                                            />
+                                            <FormMessage className="col-span-4" />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+
+                            <DialogFooter>
+                                <Button type="submit">Create</Button>
+                            </DialogFooter>
+                        </form>
+                    </Form>
                 </DialogContent>
             </Dialog>
         </>

@@ -1,4 +1,5 @@
 import { UserType } from "@/lib/utils";
+import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -28,6 +29,8 @@ import {
     FormItem,
     FormMessage,
 } from "@/components/ui/form";
+import { useToast } from "./ui/use-toast";
+
 type Props = {
     user: UserType;
 };
@@ -60,12 +63,13 @@ const formSchema = z.object({
 });
 
 function EditButton({ user }: Props) {
+    const { toast } = useToast();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             id: user.id,
-            firstname: user.first_name,
-            lastname: user.last_name,
+            firstname: user.firstName,
+            lastname: user.lastName,
             avatar: user.avatar,
             domain: user.domain,
             gender: user.gender,
@@ -75,7 +79,21 @@ function EditButton({ user }: Props) {
     });
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
+        console.log(`${import.meta.env.VITE_SERVER_URL}/user/${values.id}`);
+        try {
+            const res = await axios.put(
+                `${import.meta.env.VITE_SERVER_URL}/user/${values.id}`,
+                values
+            );
+            toast({
+                title: "Successfully updated the user",
+                description: "Updated the user",
+                className: "bg-green-400",
+                duration: 3000,
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (

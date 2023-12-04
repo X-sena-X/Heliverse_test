@@ -8,7 +8,15 @@ type Props = {
 function SearchInput({ onInputChange }: Props) {
     const [searchValue, setSearchValue] = useState<string>("");
 
-    useEffect(() => onInputChange(searchValue), [searchValue]);
+    useEffect(() => {
+        async function call() {
+            onInputChange(searchValue);
+        }
+        if (searchValue != "") {
+            call();
+        }
+    }, [searchValue]);
+
     return (
         <>
             <Input

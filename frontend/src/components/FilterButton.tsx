@@ -17,6 +17,9 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "./ui/checkbox";
 import { CheckedState } from "@radix-ui/react-checkbox";
+import axios from "axios";
+import { useContext } from "react";
+import { UserContext } from "@/context/ContextProvider";
 
 type filtersType = {
     availability: null | CheckedState;
@@ -39,18 +42,71 @@ const FilterButton = ({ className }: Props) => {
     const [filterGender, setFilterGender] = useState<string | null>(null);
     const [filterAvailability, setFilterAvailability] =
         useState<CheckedState | null>(null);
-
+    const userContext = useContext(UserContext);
+    const { setUserData, setIsLoading } = userContext || {};
     useEffect(() => {
         filters.domains = filterDomain!;
         filters.gender = filterGender!;
         filters.availability = filterAvailability ? filterAvailability : null;
-        console.log(filters);
+
+        const filter = `${
+            filters.domains != null ? `domain=${filters.domains}&` : ""
+        }${filters.gender != null ? `gender=${filters.gender}&` : ""}${
+            filters.availability ? "available=true" : ""
+        }`.trim();
+
+        //console.log(typeof filter, filter);
+
+        async function getData() {
+            try {
+                if (filter !== "") {
+                    setIsLoading(true);
+                    const response = await axios.get(
+                        `${
+                            import.meta.env.VITE_SERVER_URL
+                        }/user/filters?${filter}`
+                    );
+                    const data = response.data.data;
+                    if (!data) return;
+                    setUserData(data);
+                    setIsLoading(false);
+                } else {
+                    setIsLoading(true);
+                    const response = await axios.get(
+                        `${import.meta.env.VITE_SERVER_URL}/user?page=1`
+                    );
+                    const data = response.data.data;
+                    if (!data) return;
+                    setUserData(data);
+                }
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        getData();
     }, [filterDomain, filterGender, filterAvailability]);
 
-    function clearFilterAction() {
-        setFilterDomain("");
-        setFilterGender("");
+    async function clearFilterAction() {
+        setFilterDomain(null);
+        setFilterGender(null);
         setFilterAvailability(null);
+
+        try {
+            setIsLoading(true);
+            const response = await axios.get(
+                `${import.meta.env.VITE_SERVER_URL}/user?page=1`
+            );
+            const data = response.data.data;
+            if (!data) return;
+            setUserData(data);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setIsLoading(false);
+        }
     }
     return (
         <div className={className}>
@@ -123,8 +179,24 @@ const FilterButton = ({ className }: Props) => {
                                         <Label htmlFor="r4">Management</Label>
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="UI" id="r5" />
-                                        <Label htmlFor="r5">UI</Label>
+                                        <RadioGroupItem
+                                            value="UI Designing"
+                                            id="r5"
+                                        />
+                                        <Label htmlFor="r5">UI Designing</Label>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem
+                                            value="Business Development"
+                                            id="r6"
+                                        />
+                                        <Label htmlFor="r6">
+                                            Business Development
+                                        </Label>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="IT" id="r7" />
+                                        <Label htmlFor="r7">IT</Label>
                                     </div>
                                 </RadioGroup>
                             </AccordionContent>
@@ -153,6 +225,13 @@ const FilterButton = ({ className }: Props) => {
                                             id="female"
                                         />
                                         <Label htmlFor="r2">Female</Label>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem
+                                            value="Bigender"
+                                            id="Bigender"
+                                        />
+                                        <Label htmlFor="r2">Bigender</Label>
                                     </div>
                                 </RadioGroup>
                             </AccordionContent>

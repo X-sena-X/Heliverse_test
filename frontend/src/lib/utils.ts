@@ -8,8 +8,8 @@ export function cn(...inputs: ClassValue[]) {
 
 export interface UserType {
     id: number;
-    first_name: string;
-    last_name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     gender: string;
     avatar: string;
@@ -17,6 +17,7 @@ export interface UserType {
     available: boolean;
 }
 
+/*
 export const UserData: Array<UserType> = [
     {
         id: 1,
@@ -219,3 +220,4 @@ export const UserData: Array<UserType> = [
         available: true,
     },
 ];
+*/

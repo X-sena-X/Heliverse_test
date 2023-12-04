@@ -17,7 +17,6 @@
 	"include": [
 		"src",
 		"src/db/init.ts",
-		"prisma/seed.ts"
 	],
 	"exclude": [
 		"node_modules",

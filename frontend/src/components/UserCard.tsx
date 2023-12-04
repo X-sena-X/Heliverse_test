@@ -34,19 +34,10 @@ import { useToast } from "@/components/ui/use-toast";
 
 type Props = {
     user: UserType;
+    key: number;
 };
 
-type SelectedUserType = {
-    id: number;
-    first_name: string;
-    last_name: string;
-    email: string;
-    gender: string;
-    avatar: string;
-    domain: string;
-    available: boolean;
-};
-function UserCard({ user }: Props) {
+function UserCard({ user, key }: Props) {
     const { toast } = useToast();
     const userContext = useContext(UserContext);
     const { selectedUsers, setSelectedUsers } = userContext || {};
@@ -57,6 +48,7 @@ function UserCard({ user }: Props) {
                 title: "Uh oh! This user cannot be added to the team.",
                 variant: "destructive",
                 description: "User not available currently.",
+                duration: 2000,
             });
             return;
         }
@@ -71,6 +63,7 @@ function UserCard({ user }: Props) {
                 title: "Uh oh! This user cannot be added to the team.",
                 variant: "destructive",
                 description: "User already selected.",
+                duration: 2000,
             });
             return;
         }
@@ -80,6 +73,7 @@ function UserCard({ user }: Props) {
                 title: "Uh oh! This user cannot be added to the team.",
                 variant: "destructive",
                 description: "User in the same domain.",
+                duration: 2000,
             });
             return;
         }
@@ -88,10 +82,13 @@ function UserCard({ user }: Props) {
     };
 
     return (
-        <Card className="w-[180px] lg:w-[310px] hover:shadow-[-10px_-10px_30px_4px_rgba(0,0,0,0.1),_10px_10px_30px_4px_rgba(45,78,255,0.15)] shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
+        <Card
+            key={key}
+            className="w-[180px] lg:w-[310px] hover:shadow-[-10px_-10px_30px_4px_rgba(0,0,0,0.1),_10px_10px_30px_4px_rgba(45,78,255,0.15)] shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
+        >
             <CardHeader>
                 <CardTitle className="flex flex-col items-center relative gap-y-2 text-base lg:text-2xl">
-                    <Avatar className="w-10 h-10 lg:w-18 lg:h-18 rounded-full">
+                    <Avatar className="w-18 h-18 lg:w-24 lg:h-24 bg-slate-300">
                         <AvatarImage
                             src={user.avatar}
                             className="w-18 h-18 rounded-full"
@@ -185,8 +182,9 @@ function UserCard({ user }: Props) {
                     </DropdownMenu>
                 </CardTitle>
             </CardHeader>
-            <CardDescription className="text-base text-center lg:text-xl font-bold">
-                {user.first_name + " " + user.last_name}
+            <CardDescription className="text-base text-center lg:text-xl font-bold text-black dark:text-white">
+                {user.firstName + " " + user.lastName}
+                <p className=" text-sm text-slate-400">{user.domain}</p>
             </CardDescription>
 
             <CardContent className="flex flex-col gap-y-2 pt-4">
@@ -196,12 +194,7 @@ function UserCard({ user }: Props) {
                     </p>
                     {user.gender}
                 </span>
-                <span className="grid grid-cols-4 gap-x-2 text-xs lg:text-base">
-                    <p className="col-span-2 lg:col-span-1   font-semibold">
-                        Domain:
-                    </p>
-                    <p className="col-span-2">{user.domain}</p>
-                </span>
+
                 <span className="grid grid-cols-4 gap-x-2 truncate	text-xs lg:text-base">
                     <p className="col-span-2 lg:col-span-1  font-semibold ">
                         Email:

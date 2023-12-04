@@ -16,14 +16,12 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             enableSystem
             disableTransitionOnChange
         >
-            <Provider store={store}>
-                <UserProvider>
-                    <BrowserRouter>
-                        <App />
-                        <Toaster />
-                    </BrowserRouter>
-                </UserProvider>
-            </Provider>
+            <UserProvider>
+                <BrowserRouter>
+                    <App />
+                    <Toaster />
+                </BrowserRouter>
+            </UserProvider>
         </ThemeProvider>
     </React.StrictMode>
 );
