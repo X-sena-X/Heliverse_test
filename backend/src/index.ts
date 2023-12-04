@@ -23,7 +23,9 @@ app.use(
 
 app.use("/user", userRouter);
 app.use("/team", teamRouter);
-
+app.get("/", (req, res) => {
+    res.send("Hey this is my API running 🥳");
+});
 const main = async () => {
     try {
         checkEnvVariables(requiredEnvVars);
