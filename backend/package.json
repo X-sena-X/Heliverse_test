@@ -4,11 +4,11 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "build": "esbuild src/index.ts --bundle --platform=node --outfile=dist/index.js --format=esm",
+        "build": "rimraf dist && tsc",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node dist/index.js",
-        "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
-        "initdb": "node dist/scripts/initdb.js"
+        "start": "node dist/src/index.js",
+        "dev": "nodemon --watch 'src/*/.ts' --exec 'ts-node' src/index.ts",
+        "seed": "node dist/prisma/seed.js"
     },
     "keywords": [],
     "author": "",

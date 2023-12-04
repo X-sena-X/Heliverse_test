@@ -7,7 +7,7 @@
 		"removeComments": true,
 		"sourceMap": false,
 		"outDir": "./dist",
-		"rootDir": "./src",
+		"rootDir": ".",
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"allowJs": true,
@@ -16,8 +16,7 @@
 	},
 	"include": [
 		"src",
-		"src/db/init.ts",
-		"./prisma/seed.ts"
+		"prisma/seed.ts"
 	],
 	"exclude": [
 		"node_modules",
