@@ -14,12 +14,6 @@ const PORT = Number(process.env.PORT) || 8080;
 
 app.use(morgan(process.env.NODE_ENV == "production" ? "common" : "dev"));
 app.use(express.json());
-app.use(
-    cors({
-        credentials: true,
-        origin: "http://localhost:5173",
-    })
-);
 
 app.use("/user", userRouter);
 app.use("/team", teamRouter);
