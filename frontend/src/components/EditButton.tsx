@@ -36,11 +36,11 @@ type Props = {
 };
 
 const formSchema = z.object({
-    id: z.number(),
-    firstname: z.string().min(4, {
+    id: z.string(),
+    firstName: z.string().min(4, {
         message: "FirstName must be at least 4 characters.",
     }),
-    lastname: z.string(),
+    lastName: z.string(),
     email: z
         .string({
             required_error: "Please enter a valid email address",
@@ -68,8 +68,8 @@ function EditButton({ user }: Props) {
         resolver: zodResolver(formSchema),
         defaultValues: {
             id: user.id,
-            firstname: user.firstName,
-            lastname: user.lastName,
+            firstName: user.firstName,
+            lastName: user.lastName,
             avatar: user.avatar,
             domain: user.domain,
             gender: user.gender,
@@ -78,10 +78,13 @@ function EditButton({ user }: Props) {
         },
     });
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(`${import.meta.env.VITE_SERVER_URL}/user/${values.id}`);
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        //console.log(`${import.meta.env.VITE_SERVER_URL}/user/${values.id}`);
+        console.log(values);
+        console.log("here");
+
         try {
-            const res = await axios.put(
+            /*const res = await axios.put(
                 `${import.meta.env.VITE_SERVER_URL}/user/${values.id}`,
                 values
             );
@@ -90,7 +93,7 @@ function EditButton({ user }: Props) {
                 description: "Updated the user",
                 className: "bg-green-400",
                 duration: 3000,
-            });
+            });*/
         } catch (error) {
             console.log(error);
         }
@@ -103,30 +106,29 @@ function EditButton({ user }: Props) {
                     Edit user
                 </Button>
             </DialogTrigger>
+
             <DialogContent className="sm:max-w-[425px] lg:max-w-[600px]">
-                <DialogHeader>
-                    <DialogTitle>Edit profile</DialogTitle>
-                    <DialogDescription>
-                        Make changes to user details. Click save when you're
-                        done.
-                    </DialogDescription>
-                </DialogHeader>
                 <Form {...form}>
                     <form
-                        onSubmit={form.handleSubmit(onSubmit)}
                         className="space-y-8"
+                        onSubmit={form.handleSubmit(onSubmit)}
                     >
+                        <DialogHeader>
+                            <DialogTitle>Edit profile</DialogTitle>
+                            <DialogDescription>
+                                Make changes to user details. Click save when
+                                you're done.
+                            </DialogDescription>
+                        </DialogHeader>
+
                         <div className="grid gap-4 grid-cols-2  py-4">
                             <div className="grid grid-cols-2 col-span-2 gap-y-4 gap-x-2">
                                 <FormField
                                     control={form.control}
-                                    name="firstname"
+                                    name="firstName"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <Label
-                                                htmlFor="firstname"
-                                                className="text-right"
-                                            >
+                                            <Label className="text-right">
                                                 FirstName
                                             </Label>
                                             <Input
@@ -139,13 +141,10 @@ function EditButton({ user }: Props) {
                                 />
                                 <FormField
                                     control={form.control}
-                                    name="lastname"
+                                    name="lastName"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <Label
-                                                htmlFor="LastName"
-                                                className="text-right"
-                                            >
+                                            <Label className="text-right">
                                                 LastName
                                             </Label>
                                             <Input
@@ -222,7 +221,55 @@ function EditButton({ user }: Props) {
                                     </FormItem>
                                 )}
                             />
+                            <FormField
+                                control={form.control}
+                                name="available"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <Label
+                                            htmlFor="gender"
+                                            className="text-right"
+                                        >
+                                            Gender
+                                        </Label>
+                                        <Select
+                                            onValueChange={(value) =>
+                                                value === "Available"
+                                                    ? form.setValue(
+                                                          "available",
+                                                          true
+                                                      )
+                                                    : form.setValue(
+                                                          "available",
+                                                          false
+                                                      )
+                                            }
+                                            defaultValue={
+                                                field.value
+                                                    ? "Available"
+                                                    : "Unavailable"
+                                            }
+                                        >
+                                            <SelectTrigger className="col-span-3">
+                                                <FormControl>
+                                                    <SelectValue placeholder="Select Availability" />
+                                                </FormControl>
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="Available">
+                                                    Available
+                                                </SelectItem>
+                                                <SelectItem value="Unavailable">
+                                                    Unavailable
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
                         </div>
+
                         <DialogFooter>
                             <Button type="submit">Save changes</Button>
                         </DialogFooter>

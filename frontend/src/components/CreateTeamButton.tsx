@@ -23,6 +23,8 @@ import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import axios from "axios";
+import { useToast } from "./ui/use-toast";
 
 type Props = {};
 
@@ -36,20 +38,45 @@ const formSchema = z.object({
 export function CreateTeamButton({}: Props) {
     const userContext = useContext(UserContext);
     const { selectedUsers } = userContext || [];
+    const { toast } = useToast();
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             teamname: "",
-            users: selectedUsers!.map((user) => user.domain),
+            users: selectedUsers!.map((user) => user.id),
         },
     });
-    function onCreateTeam(values: z.infer<typeof formSchema>) {
+    async function onCreateTeam(values: z.infer<typeof formSchema>) {
         console.log(values);
+
+        try {
+            toast({
+                title: "Creating Team",
+                duration: 2000,
+            });
+            const response = await axios.post(
+                `${import.meta.env.VITE_SERVER_URL}/team/`,
+                { name: values.teamname, users: values.users }
+            );
+            toast({
+                title: "Successfully created team",
+                description: `Team ${values.teamname} created successfully`,
+            });
+        } catch (error) {
+            console.log(error);
+            toast({
+                title: "Uh oh! something went wrong",
+                variant: "destructive",
+                description: `Error creating team. Please try again..`,
+            });
+        } finally {
+        }
     }
     useEffect(() => {
         form.setValue(
             "users",
-            selectedUsers!.map((user) => user.domain)
+            selectedUsers!.map((user) => user.id)
         );
     }, [selectedUsers]);
     return (

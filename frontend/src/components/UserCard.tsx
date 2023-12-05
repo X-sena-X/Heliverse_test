@@ -21,6 +21,7 @@ import EditButton from "./EditButton";
 import { MoreHorizontal } from "lucide-react";
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
     DialogFooter,
@@ -31,6 +32,8 @@ import {
 import { useContext } from "react";
 import { UserContext } from "@/context/ContextProvider";
 import { useToast } from "@/components/ui/use-toast";
+import axios from "axios";
+import { redirect, useNavigate } from "react-router-dom";
 
 type Props = {
     user: UserType;
@@ -38,6 +41,7 @@ type Props = {
 };
 
 function UserCard({ user, key }: Props) {
+    const navigate = useNavigate();
     const { toast } = useToast();
     const userContext = useContext(UserContext);
     const { selectedUsers, setSelectedUsers } = userContext || {};
@@ -80,6 +84,29 @@ function UserCard({ user, key }: Props) {
 
         setSelectedUsers([...selectedUsers, newUser]);
     };
+
+    async function deleteUser({ id }: { id: string }) {
+        try {
+            await axios.delete(`${import.meta.env.VITE_SERVER_URL}/user/${id}`);
+            toast({
+                title: "Successfull deletion",
+                className: "bg-green-400",
+                description: "User deleted",
+                duration: 2000,
+            });
+
+            redirect("/");
+        } catch (error) {
+            console.log(error);
+            toast({
+                title: "Uh oh! Something went wrong",
+                variant: "destructive",
+                description: "User cannot be deleted try again",
+                duration: 3000,
+            });
+        } finally {
+        }
+    }
 
     return (
         <Card
@@ -169,12 +196,21 @@ function UserCard({ user, key }: Props) {
                                         </DialogDescription>
                                     </DialogHeader>
                                     <DialogFooter>
-                                        <Button variant="default">
-                                            Cancel
-                                        </Button>
-                                        <Button variant="destructive">
-                                            Delete
-                                        </Button>
+                                        <DialogClose asChild>
+                                            <Button variant="default">
+                                                Cancel
+                                            </Button>
+                                        </DialogClose>
+                                        <DialogClose asChild>
+                                            <Button
+                                                variant="destructive"
+                                                onClick={() =>
+                                                    deleteUser({ id: user.id })
+                                                }
+                                            >
+                                                Delete
+                                            </Button>
+                                        </DialogClose>
                                     </DialogFooter>
                                 </DialogContent>
                             </Dialog>

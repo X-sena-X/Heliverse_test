@@ -1,7 +1,7 @@
 import React, { createContext, useState } from "react";
 
 export type UserType = {
-    id: number;
+    id: string;
     firstName: string;
     lastName: string;
     email: string;

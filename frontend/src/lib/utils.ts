@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export interface UserType {
-    id: number;
+    id: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -16,6 +16,153 @@ export interface UserType {
     domain: string;
     available: boolean;
 }
+
+interface TeamType {
+    id: string;
+    teamName: string;
+    members: UserType[];
+}
+
+export const TeamData: Array<TeamType> = [
+    {
+        id: "dfdsafsdfs",
+        teamName: "team1",
+        members: [
+            {
+                id: "dsfds",
+                firstName: "Anet",
+                lastName: "Doe",
+                email: "adoe0@comcast.net",
+                gender: "Female",
+                avatar: "https://robohash.org/sintessequaerat.png?size=50x50&set=set1",
+                domain: "Sales",
+                available: false,
+            },
+            {
+                id: "dfdsf",
+                firstName: "Honoria",
+                lastName: "Caughte",
+                email: "hcaughte1@google.com.br",
+                gender: "Female",
+                avatar: "https://robohash.org/temporibusporrolaboriosam.png?size=50x50&set=set1",
+                domain: "Finance",
+                available: true,
+            },
+            {
+                id: "sdfas",
+                firstName: "Wiley",
+                lastName: "Boarder",
+                email: "wboarder2@xing.com",
+                gender: "Male",
+                avatar: "https://robohash.org/laboriosamdolorepossimus.png?size=50x50&set=set1",
+                domain: "Marketing",
+                available: false,
+            },
+            {
+                id: "sfsd",
+                firstName: "Monique",
+                lastName: "Wilbud",
+                email: "mwilbud5@state.gov",
+                gender: "Female",
+                avatar: "https://robohash.org/maximequiomnis.png?size=50x50&set=set1",
+                domain: "IT",
+                available: true,
+            },
+        ],
+    },
+    {
+        id: "dfdsafsdfs",
+        teamName: "team1",
+        members: [
+            {
+                id: "dsfasd",
+                firstName: "Anet",
+                lastName: "Doe",
+                email: "adoe0@comcast.net",
+                gender: "Female",
+                avatar: "https://robohash.org/sintessequaerat.png?size=50x50&set=set1",
+                domain: "Sales",
+                available: false,
+            },
+            {
+                id: "sdfas",
+                firstName: "Honoria",
+                lastName: "Caughte",
+                email: "hcaughte1@google.com.br",
+                gender: "Female",
+                avatar: "https://robohash.org/temporibusporrolaboriosam.png?size=50x50&set=set1",
+                domain: "Finance",
+                available: true,
+            },
+            {
+                id: "sdfsa",
+                firstName: "Wiley",
+                lastName: "Boarder",
+                email: "wboarder2@xing.com",
+                gender: "Male",
+                avatar: "https://robohash.org/laboriosamdolorepossimus.png?size=50x50&set=set1",
+                domain: "Marketing",
+                available: false,
+            },
+            {
+                id: "sdfs",
+                firstName: "Monique",
+                lastName: "Wilbud",
+                email: "mwilbud5@state.gov",
+                gender: "Female",
+                avatar: "https://robohash.org/maximequiomnis.png?size=50x50&set=set1",
+                domain: "IT",
+                available: true,
+            },
+        ],
+    },
+    {
+        id: "dfdsafsdfs",
+        teamName: "team1",
+        members: [
+            {
+                id: "sdfa",
+                firstName: "Anet",
+                lastName: "Doe",
+                email: "adoe0@comcast.net",
+                gender: "Female",
+                avatar: "https://robohash.org/sintessequaerat.png?size=50x50&set=set1",
+                domain: "Sales",
+                available: false,
+            },
+            {
+                id: "sfasd",
+                firstName: "Honoria",
+                lastName: "Caughte",
+                email: "hcaughte1@google.com.br",
+                gender: "Female",
+                avatar: "https://robohash.org/temporibusporrolaboriosam.png?size=50x50&set=set1",
+                domain: "Finance",
+                available: true,
+            },
+            {
+                id: "dsfasdf",
+                firstName: "Wiley",
+                lastName: "Boarder",
+                email: "wboarder2@xing.com",
+                gender: "Male",
+                avatar: "https://robohash.org/laboriosamdolorepossimus.png?size=50x50&set=set1",
+                domain: "Marketing",
+                available: false,
+            },
+            {
+                id: "sdfas",
+                firstName: "Monique",
+                lastName: "Wilbud",
+                email: "mwilbud5@state.gov",
+                gender: "Female",
+                avatar: "https://robohash.org/maximequiomnis.png?size=50x50&set=set1",
+                domain: "IT",
+                available: true,
+            },
+        ],
+    },
+];
 
 /*
 export const UserData: Array<UserType> = [

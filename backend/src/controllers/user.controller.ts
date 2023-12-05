@@ -91,6 +91,7 @@ const updateUser = async (req: Request, res: Response) => {
 
 const deleteUser = async (req: Request, res: Response) => {
     const { id } = req.params;
+    console.log(id);
     if (!id) return unprocessableEntryResponse(res, "User id not provided");
 
     try {
@@ -104,7 +105,7 @@ const deleteUser = async (req: Request, res: Response) => {
             return notFoundResponse(res, "User not found");
         }
 
-        return deletedUser;
+        return successResponse(res, deletedUser);
     } catch (error) {
         console.error(error);
         return internalErrorResponse(res, error);
