@@ -20,7 +20,6 @@ app.use(
         origin: "https://heliverse-test.vercel.app",
     })
 );
-app.use();
 
 app.use("/user", userRouter);
 app.use("/team", teamRouter);
