@@ -43,7 +43,8 @@ const FilterButton = ({ className }: Props) => {
     const [filterAvailability, setFilterAvailability] =
         useState<CheckedState | null>(null);
     const userContext = useContext(UserContext);
-    const { setUserData, setIsLoading } = userContext || {};
+    const { setUserData, setIsLoading, setPage, FetchData } = userContext || {};
+
     useEffect(() => {
         filters.domains = filterDomain!;
         filters.gender = filterGender!;
@@ -61,6 +62,7 @@ const FilterButton = ({ className }: Props) => {
             try {
                 if (filter !== "") {
                     setIsLoading(true);
+
                     const response = await axios.get(
                         `${
                             import.meta.env.VITE_SERVER_URL
@@ -68,6 +70,7 @@ const FilterButton = ({ className }: Props) => {
                     );
                     const data = response.data.data;
                     if (!data) return;
+                    setPage(1);
                     setUserData(data);
                     setIsLoading(false);
                 } else {
@@ -76,6 +79,7 @@ const FilterButton = ({ className }: Props) => {
                         `${import.meta.env.VITE_SERVER_URL}/user?page=1`
                     );
                     const data = response.data.data;
+                    setPage(1);
                     if (!data) return;
                     setUserData(data);
                 }
@@ -85,6 +89,12 @@ const FilterButton = ({ className }: Props) => {
                 setIsLoading(false);
             }
         }
+        /* if (filter != "" || null || undefined) {
+            console.log(filter);
+            FetchData({ filter: filter, normal: false, searchText: null });
+        } else {
+            FetchData({ filter: null, normal: true, searchText: null });
+        }*/
 
         getData();
     }, [filterDomain, filterGender, filterAvailability]);
@@ -101,6 +111,7 @@ const FilterButton = ({ className }: Props) => {
             );
             const data = response.data.data;
             if (!data) return;
+            setPage(1);
             setUserData(data);
         } catch (error) {
             console.log(error);
@@ -126,7 +137,7 @@ const FilterButton = ({ className }: Props) => {
                         Clear Filters
                     </Button>
                 </div>
-                <PopoverContent className="w-72 flex flex-col gap-y-4">
+                <PopoverContent className="w-48 lg:w-64 flex flex-col gap-y-4">
                     <div className="flex items-center space-x-4">
                         <Checkbox
                             id="Availability"
@@ -141,7 +152,9 @@ const FilterButton = ({ className }: Props) => {
                     </div>
                     <Accordion type="multiple" className="w-full">
                         <AccordionItem value="domain">
-                            <AccordionTrigger>Domain</AccordionTrigger>
+                            <AccordionTrigger className="">
+                                Domain
+                            </AccordionTrigger>
                             <AccordionContent>
                                 <RadioGroup
                                     onValueChange={(value) => {
@@ -232,6 +245,13 @@ const FilterButton = ({ className }: Props) => {
                                             id="Bigender"
                                         />
                                         <Label htmlFor="r2">Bigender</Label>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem
+                                            value="Agender"
+                                            id="Agender"
+                                        />
+                                        <Label htmlFor="r2">Agender</Label>
                                     </div>
                                 </RadioGroup>
                             </AccordionContent>

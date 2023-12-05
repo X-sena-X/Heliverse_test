@@ -16,6 +16,7 @@ import {
     FormControl,
     FormField,
     FormItem,
+    FormLabel,
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -103,13 +104,15 @@ export function CreateTeamButton({}: Props) {
                                     name="teamname"
                                     render={({ field }) => (
                                         <FormItem className="grid grid-cols-4 items-center gap-4">
-                                            <Label className="text-right">
+                                            <FormLabel className="text-right">
                                                 Team Name
-                                            </Label>
-                                            <Input
-                                                {...field}
-                                                className="col-span-3"
-                                            />
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    className="col-span-3"
+                                                />
+                                            </FormControl>
                                             <FormMessage className="col-span-4" />
                                         </FormItem>
                                     )}

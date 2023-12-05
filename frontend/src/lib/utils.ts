@@ -26,7 +26,7 @@ interface TeamType {
 export const TeamData: Array<TeamType> = [
     {
         id: "dfdsafsdfs",
-        teamName: "team1",
+        teamName: "Team1",
         members: [
             {
                 id: "dsfds",
@@ -72,7 +72,7 @@ export const TeamData: Array<TeamType> = [
     },
     {
         id: "dfdsafsdfs",
-        teamName: "team1",
+        teamName: "Team 2",
         members: [
             {
                 id: "dsfasd",
@@ -118,7 +118,7 @@ export const TeamData: Array<TeamType> = [
     },
     {
         id: "dfdsafsdfs",
-        teamName: "team1",
+        teamName: "Team 3",
         members: [
             {
                 id: "sdfa",

@@ -114,27 +114,28 @@ const deleteUser = async (req: Request, res: Response) => {
 
 const searchByName = async (req: Request, res: Response) => {
     const { name, page = 1, limit = 20 } = req.query;
-    console.log(name);
+    let users = null;
     if (!name) return unprocessableEntryResponse(res, "Name not provided");
-
-    const users = await prisma.user.findMany({
-        skip: Number(page - 1) * Number(limit),
-        take: Number(limit),
-        where: {
-            OR: [
-                {
-                    firstName: {
-                        contains: name,
+    if (name != "") {
+        users = await prisma.user.findMany({
+            skip: Number(page - 1) * Number(limit),
+            take: Number(limit),
+            where: {
+                OR: [
+                    {
+                        firstName: {
+                            contains: name,
+                        },
                     },
-                },
-                {
-                    lastName: {
-                        contains: name,
-                    },
-                },
-            ],
-        },
-    });
+                ],
+            },
+        });
+    } else {
+        users = await prisma.user.findMany({
+            skip: Number(page - 1) * Number(limit),
+            take: Number(limit),
+        });
+    }
 
     if (!users) {
         return notFoundResponse(res, "Users not found");
@@ -143,7 +144,7 @@ const searchByName = async (req: Request, res: Response) => {
 };
 
 const filters = async (req: Request, res: Response) => {
-    const { domain, gender, available } = req.query;
+    const { domain, gender, available, page = 1, limit = 20 } = req.query;
 
     if (!domain && !gender && !available)
         return unprocessableEntryResponse(res, "Domain not provided");
@@ -165,9 +166,11 @@ const filters = async (req: Request, res: Response) => {
     addCondition("available", Boolean(available));
 
     const users = await prisma.user.findMany({
+        skip: Number(page - 1) * Number(limit),
+        take: Number(limit),
         where: whereConditions,
     });
-    console.log(whereConditions);
+
     if (!users) {
         return notFoundResponse(res, "Users not found with this domain");
     }

@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
     DialogFooter,
@@ -27,9 +28,11 @@ import {
     FormControl,
     FormField,
     FormItem,
+    FormLabel,
     FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "./ui/use-toast";
+import { Switch } from "@/components/ui/switch";
 
 type Props = {
     user: UserType;
@@ -64,6 +67,7 @@ const formSchema = z.object({
 
 function EditButton({ user }: Props) {
     const { toast } = useToast();
+    console.log(user);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -79,24 +83,30 @@ function EditButton({ user }: Props) {
     });
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        //console.log(`${import.meta.env.VITE_SERVER_URL}/user/${values.id}`);
         console.log(values);
-        console.log("here");
-
-        try {
-            /*const res = await axios.put(
-                `${import.meta.env.VITE_SERVER_URL}/user/${values.id}`,
-                values
-            );
-            toast({
-                title: "Successfully updated the user",
-                description: "Updated the user",
-                className: "bg-green-400",
-                duration: 3000,
-            });*/
-        } catch (error) {
-            console.log(error);
+        async function UpdateData() {
+            try {
+                const res = await axios.put(
+                    `${import.meta.env.VITE_SERVER_URL}/user/${values.id}`,
+                    values
+                );
+                toast({
+                    title: "Successfully updated the user",
+                    description: "Updated the user",
+                    className: "bg-green-400",
+                    duration: 3000,
+                });
+            } catch (error) {
+                console.log(error);
+                toast({
+                    title: "uh oh!! something went wrong",
+                    description: "Please try again later!",
+                    variant: "destructive",
+                    duration: 3000,
+                });
+            }
         }
+        UpdateData();
     }
 
     return (
@@ -108,19 +118,192 @@ function EditButton({ user }: Props) {
             </DialogTrigger>
 
             <DialogContent className="sm:max-w-[425px] lg:max-w-[600px]">
+                <DialogHeader>
+                    <DialogTitle>Edit profile</DialogTitle>
+                    <DialogDescription>
+                        Make changes to user details. Click save when you're
+                        done.
+                    </DialogDescription>
+                </DialogHeader>
                 <Form {...form}>
                     <form
                         className="space-y-8"
                         onSubmit={form.handleSubmit(onSubmit)}
                     >
-                        <DialogHeader>
-                            <DialogTitle>Edit profile</DialogTitle>
-                            <DialogDescription>
-                                Make changes to user details. Click save when
-                                you're done.
-                            </DialogDescription>
-                        </DialogHeader>
+                        <div className="grid gap-4 grid-cols-2  py-4">
+                            <FormField
+                                control={form.control}
+                                name="firstName"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <Label className="text-right">
+                                            FirstName
+                                        </Label>
+                                        <Input
+                                            className="col-span-3"
+                                            {...field}
+                                        />
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="lastName"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <Label className="text-right">
+                                            LastName
+                                        </Label>
+                                        <Input
+                                            className="col-span-3"
+                                            {...field}
+                                        />
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="gender"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <Label
+                                            htmlFor="gender"
+                                            className="text-right"
+                                        >
+                                            Gender
+                                        </Label>
 
+                                        <Select
+                                            onValueChange={field.onChange}
+                                            defaultValue={field.value}
+                                        >
+                                            <SelectTrigger className="col-span-3">
+                                                <FormControl>
+                                                    <SelectValue placeholder="Select gender" />
+                                                </FormControl>
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="Male">
+                                                    Male
+                                                </SelectItem>
+                                                <SelectItem value="Female">
+                                                    Female
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <Label className="text-right">
+                                            Email
+                                        </Label>
+                                        <FormControl>
+                                            <Input
+                                                className="col-span-3"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="domain"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <Label className="text-right">
+                                            Domain
+                                        </Label>
+
+                                        <Select
+                                            onValueChange={field.onChange}
+                                            defaultValue={field.value}
+                                        >
+                                            <SelectTrigger className="col-span-3">
+                                                <FormControl>
+                                                    <SelectValue placeholder="Select Domain" />
+                                                </FormControl>
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="Sales">
+                                                    Sales
+                                                </SelectItem>
+                                                <SelectItem value="Finance">
+                                                    Finance
+                                                </SelectItem>
+                                                <SelectItem value="Marketing">
+                                                    Marketing
+                                                </SelectItem>
+                                                <SelectItem value="Management">
+                                                    Management
+                                                </SelectItem>
+                                                <SelectItem value="IT">
+                                                    IT
+                                                </SelectItem>
+                                                <SelectItem value="UI Designing">
+                                                    UI Designing
+                                                </SelectItem>
+                                                <SelectItem value="Business Development">
+                                                    Business Development
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="available"
+                                render={({ field }) => (
+                                    <FormItem className="grid col-span-1 grid-cols-4 items-center gap-y-4 lg:gap-8">
+                                        <FormLabel className="text-left lg:text-right col-span-3 lg:col-span-1">
+                                            Availability
+                                        </FormLabel>
+
+                                        <FormControl>
+                                            <Switch
+                                                checked={field.value}
+                                                onCheckedChange={field.onChange}
+                                            />
+                                        </FormControl>
+                                        <FormMessage className="col-span-4" />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <DialogFooter>
+                            <DialogClose>
+                                <Button type="submit">Save changes</Button>
+                            </DialogClose>
+                        </DialogFooter>
+                    </form>
+                </Form>
+            </DialogContent>
+        </Dialog>
+    );
+}
+
+export default EditButton;
+
+/**
+ * 
+ * <Form {...form}>
+                    <form
+                        className="space-y-8"
+                        onSubmit={form.handleSubmit(onSubmit)}
+                    >
                         <div className="grid gap-4 grid-cols-2  py-4">
                             <div className="grid grid-cols-2 col-span-2 gap-y-4 gap-x-2">
                                 <FormField
@@ -167,6 +350,7 @@ function EditButton({ user }: Props) {
                                         >
                                             Gender
                                         </Label>
+
                                         <Select
                                             onValueChange={field.onChange}
                                             defaultValue={field.value}
@@ -185,6 +369,7 @@ function EditButton({ user }: Props) {
                                                 </SelectItem>
                                             </SelectContent>
                                         </Select>
+
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -197,11 +382,13 @@ function EditButton({ user }: Props) {
                                         <Label className="text-right">
                                             Email
                                         </Label>
-                                        <Input
-                                            className="col-span-3"
-                                            {...field}
-                                        />
-                                        <FormMessage />
+                                        <FormControl>
+                                            <Input
+                                                className="col-span-3"
+                                                {...field}
+                                            />
+                                            <FormMessage />
+                                        </FormControl>
                                     </FormItem>
                                 )}
                             />
@@ -213,10 +400,41 @@ function EditButton({ user }: Props) {
                                         <Label className="text-right">
                                             Domain
                                         </Label>
-                                        <Input
-                                            className="col-span-3"
-                                            {...field}
-                                        />
+
+                                        <Select
+                                            onValueChange={field.onChange}
+                                            defaultValue={field.value}
+                                        >
+                                            <SelectTrigger className="col-span-3">
+                                                <FormControl>
+                                                    <SelectValue placeholder="Select Domain" />
+                                                </FormControl>
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="Sales">
+                                                    Sales
+                                                </SelectItem>
+                                                <SelectItem value="Finance">
+                                                    Finance
+                                                </SelectItem>
+                                                <SelectItem value="Marketing">
+                                                    Marketing
+                                                </SelectItem>
+                                                <SelectItem value="Management">
+                                                    Management
+                                                </SelectItem>
+                                                <SelectItem value="IT">
+                                                    IT
+                                                </SelectItem>
+                                                <SelectItem value="UI Designing">
+                                                    UI Designing
+                                                </SelectItem>
+                                                <SelectItem value="Business Development">
+                                                    Business Development
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -225,45 +443,18 @@ function EditButton({ user }: Props) {
                                 control={form.control}
                                 name="available"
                                 render={({ field }) => (
-                                    <FormItem>
-                                        <Label
-                                            htmlFor="gender"
-                                            className="text-right"
-                                        >
-                                            Gender
-                                        </Label>
-                                        <Select
-                                            onValueChange={(value) =>
-                                                value === "Available"
-                                                    ? form.setValue(
-                                                          "available",
-                                                          true
-                                                      )
-                                                    : form.setValue(
-                                                          "available",
-                                                          false
-                                                      )
-                                            }
-                                            defaultValue={
-                                                field.value
-                                                    ? "Available"
-                                                    : "Unavailable"
-                                            }
-                                        >
-                                            <SelectTrigger className="col-span-3">
-                                                <FormControl>
-                                                    <SelectValue placeholder="Select Availability" />
-                                                </FormControl>
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="Available">
-                                                    Available
-                                                </SelectItem>
-                                                <SelectItem value="Unavailable">
-                                                    Unavailable
-                                                </SelectItem>
-                                            </SelectContent>
-                                        </Select>
+                                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                                        <div className="space-y-0.5">
+                                            <FormLabel className="text-base">
+                                                Availability
+                                            </FormLabel>
+                                        </div>
+                                        <FormControl>
+                                            <Switch
+                                                checked={field.value}
+                                                onCheckedChange={field.onChange}
+                                            />
+                                        </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -275,9 +466,4 @@ function EditButton({ user }: Props) {
                         </DialogFooter>
                     </form>
                 </Form>
-            </DialogContent>
-        </Dialog>
-    );
-}
-
-export default EditButton;
+ */
