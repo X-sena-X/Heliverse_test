@@ -62,7 +62,7 @@ export function CreateTeamButton({}: Props) {
             );
             toast({
                 title: "Successfully created team",
-                description: `Team ${values.teamname} created successfully`,
+                description: `created ${values.teamname} successfully`,
             });
         } catch (error) {
             console.log(error);

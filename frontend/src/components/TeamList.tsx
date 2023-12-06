@@ -10,7 +10,7 @@ import { Skeleton } from "./ui/skeleton";
 type Props = {};
 interface TeamType {
     id: string;
-    teamName: string;
+    name: string;
     members: UserType[];
 }
 
@@ -30,6 +30,7 @@ function TeamList({}: Props) {
 
                 const data = response.data.data;
                 TeamsData = data;
+                console.log(data);
                 toast({
                     title: "Got the data",
                     variant: "default",
@@ -46,8 +47,8 @@ function TeamList({}: Props) {
                 setIsLoading(false);
             }
         };
-        //getData();
-    });
+        getData();
+    }, []);
     return (
         <div className="grid gap-x-1 gap-y-5 items-center justify-center">
             {isLoading ? (
@@ -58,8 +59,6 @@ function TeamList({}: Props) {
                 </div>
             ) : TeamsData.length === 0 ? (
                 <>
-                    <TeamCard TeamsData={TeamsData} />
-
                     <span>No Team Found.. Create Teams</span>
                 </>
             ) : (

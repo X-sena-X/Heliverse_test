@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 interface TeamType {
     id: string;
-    teamName: string;
+    name: string;
     members: UserType[];
 }
 
@@ -16,12 +16,12 @@ type Props = {
 function TeamCard({ TeamsData }: Props) {
     return (
         <div className="grid w-full h-fit gap-y-2 lg:gap-y-4">
-            {TeamData.map((team, i) => (
+            {TeamsData.map((team, i) => (
                 <Card key={i} className=" p-4">
                     <CardHeader>
                         <CardTitle>
                             <span className=" text-violet-600">
-                                {team.teamName}
+                                {team.name}
                             </span>
                         </CardTitle>
                     </CardHeader>
