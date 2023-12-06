@@ -23,5 +23,5 @@ model User {
 model Team {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
   name    String
-  members User[]
+  members User[] 
 }

@@ -23,7 +23,7 @@ function SearchInput({ onInputChange }: Props) {
         FetchData({ searchText: null, normal: true, filter: null });
     }
     return (
-        <div className="flex flex-row items-center relative">
+        <div className="flex flex-row items-center relative group">
             <Input
                 type="text"
                 placeholder="Search names..."
@@ -31,7 +31,7 @@ function SearchInput({ onInputChange }: Props) {
                 value={searchValue}
             />
             <Cross2Icon
-                className="w-8 h-8 absolute right-0 hover:text-red-300"
+                className="hidden group-focus:flex group-hover:flex w-8 h-8 absolute right-0 hover:text-red-300"
                 onClick={() => clearInput()}
             />
         </div>

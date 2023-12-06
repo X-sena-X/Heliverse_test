@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(
     cors({
         credentials: true,
-        origin: "https://heliverse-test.vercel.app",
+        origin: "https://heliverse-test.vercel.app/",
     })
 );
 
