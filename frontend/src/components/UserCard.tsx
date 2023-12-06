@@ -84,6 +84,23 @@ function UserCard({ user, key }: Props) {
 
         setSelectedUsers([...selectedUsers, newUser]);
     };
+    function copyUserID() {
+        try {
+            navigator.clipboard.writeText(user.id.toString());
+            toast({
+                title: "copied user ID",
+                duration: 2000,
+                className: "bg-green-400",
+            });
+        } catch (error) {
+            console.log(error);
+            toast({
+                title: "Error copying user ID",
+                duration: 2000,
+                variant: "destructive",
+            });
+        }
+    }
 
     async function deleteUser({ id }: { id: string }) {
         try {
@@ -147,13 +164,7 @@ function UserCard({ user, key }: Props) {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem
-                                onClick={() =>
-                                    navigator.clipboard.writeText(
-                                        user.id.toString()
-                                    )
-                                }
-                            >
+                            <DropdownMenuItem onClick={() => copyUserID()}>
                                 Copy User ID
                             </DropdownMenuItem>
                             <DropdownMenuItem

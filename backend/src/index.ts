@@ -20,7 +20,7 @@ app.use(
         origin: "https://heliverse-test.vercel.app",
     })
 );
-
+//http://localhost:5173
 app.use("/user", userRouter);
 app.use("/team", teamRouter);
 app.get("/", (req, res) => {

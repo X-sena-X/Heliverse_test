@@ -33,7 +33,7 @@ const getTeams = async (req: Request, res: Response) => {
             members: true,
         },
     });
-    console.log(teams);
+    //console.log(teams);
     if (teams.length === 0) {
         return notFoundResponse(res, "No teams found");
     }
@@ -42,9 +42,9 @@ const getTeams = async (req: Request, res: Response) => {
 
 const createTeam = async (req: Request, res: Response) => {
     const { name, users } = req.body;
-    let domains = [];
     let usersIds = [];
-    //console.log(users);
+    /*
+    let domains = [];
     let userInfos: User[] = [];
     for (let i = 0; i < users.length; i++) {
         const user = await prisma.user.findUnique({
@@ -64,11 +64,11 @@ const createTeam = async (req: Request, res: Response) => {
         domains.push(user.domain);
         userInfos.push(user);
     }
-
+    */
     for (let i = 0; i < users.length; i++) {
         usersIds.push({ id: users[i] });
     }
-    console.log(usersIds);
+
     const team = await prisma.team.create({
         data: {
             name,
@@ -80,7 +80,7 @@ const createTeam = async (req: Request, res: Response) => {
             members: true,
         },
     });
-    console.log(team);
+
     if (!team) {
         return notFoundResponse(res, "Team not created");
     }
@@ -89,7 +89,7 @@ const createTeam = async (req: Request, res: Response) => {
 
 const deleteTeam = async (req: Request, res: Response) => {
     const { id } = req.params;
-    console.log(id);
+    //console.log(id);
     if (!id) return unprocessableEntryResponse(res, "Team id not provided");
 
     const team = await prisma.team.delete({

@@ -11,7 +11,7 @@ const prisma = new PrismaClient();
 
 const getUserById = async (req: Request, res: Response) => {
     const { id } = req.params;
-    console.log(id);
+    //console.log(id);
     if (!id) return unprocessableEntryResponse(res, "User id not provided");
 
     const user = await prisma.user.findUnique({
@@ -92,7 +92,7 @@ const updateUser = async (req: Request, res: Response) => {
 
 const deleteUser = async (req: Request, res: Response) => {
     const { id } = req.params;
-    console.log(id);
+    //console.log(id);
     if (!id) return unprocessableEntryResponse(res, "User id not provided");
 
     try {

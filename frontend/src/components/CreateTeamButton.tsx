@@ -4,6 +4,7 @@ import { useContext, useEffect } from "react";
 import { UserContext } from "@/context/ContextProvider";
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
     DialogFooter,
@@ -63,6 +64,8 @@ export function CreateTeamButton({}: Props) {
             toast({
                 title: "Successfully created team",
                 description: `created ${values.teamname} successfully`,
+                className: "bg-green-400",
+                duration: 3000,
             });
         } catch (error) {
             console.log(error);
@@ -120,7 +123,9 @@ export function CreateTeamButton({}: Props) {
                             </div>
 
                             <DialogFooter>
-                                <Button type="submit">Create</Button>
+                                <DialogClose>
+                                    <Button type="submit">Create</Button>
+                                </DialogClose>
                             </DialogFooter>
                         </form>
                     </Form>
