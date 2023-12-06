@@ -45,7 +45,6 @@ function Homepage() {
             const data = response.data.data;
             if (!data) return;
             setUserData(data);
-            //console.log(data);
             setPage(1);
             setIsLoading(false);
         } catch (error) {

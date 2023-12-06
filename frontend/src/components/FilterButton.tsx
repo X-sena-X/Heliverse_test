@@ -159,7 +159,7 @@ const FilterButton = ({ className }: Props) => {
                                 <RadioGroup
                                     onValueChange={(value) => {
                                         setFilterDomain(value);
-                                        console.log(value);
+                                        //console.log(value);
                                     }}
                                     defaultValue={filterDomain!}
                                 >
