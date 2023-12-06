@@ -25,7 +25,7 @@ const getTeamById = async (req: Request, res: Response) => {
 
 const getTeams = async (req: Request, res: Response) => {
     const { page = 1, limit = 20 } = req.query;
-    return unprocessableEntryResponse(res, "Team page not found");
+
     const teams = await prisma.team.findMany({
         skip: Number(page) - 1,
         take: Number(limit),
@@ -35,7 +35,8 @@ const getTeams = async (req: Request, res: Response) => {
 
 const createTeam = async (req: Request, res: Response) => {
     const { name, users } = req.body;
-
+    console.log(users);
+    return unprocessableEntryResponse(res, "Team page not found");
     let domains = [];
     let userInfos: User[] = [];
     for (let i = 0; i < users.length; i++) {
